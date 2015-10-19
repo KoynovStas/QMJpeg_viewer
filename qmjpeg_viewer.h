@@ -64,9 +64,11 @@ class QMJpegViewer : public QObject
 
         void  set_qlabel(QLabel *qlabel);
 
+        void  set_socket_size(qint32 size) { _tcp_socket.setReadBufferSize(size);}
 
         QAbstractSocket::SocketError socket_error() {return _tcp_socket.error();}
         QAbstractSocket::SocketState state() {return _tcp_socket.state();}
+
 
 
     signals:
