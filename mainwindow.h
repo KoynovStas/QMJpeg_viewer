@@ -25,10 +25,18 @@ class MainWindow : public QMainWindow
         ~MainWindow();
 
 
+    public slots:
+
+        void connect_btn_clicked();
+        void connect_to_dev();
+        void disconnect_from_dev();
+
 
     private:
 
         Ui::MainWindow *ui;
+
+        QMJpegViewer    mjpeg;
 };
 
 
