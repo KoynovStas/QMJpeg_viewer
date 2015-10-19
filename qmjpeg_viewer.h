@@ -40,6 +40,7 @@
 #include <QLabel>
 #include <QRegExp>
 #include <QPixmap>
+#include <QDateTime>
 #include <QTcpSocket>
 #include <QByteArray>
 #include <QMetaType>
@@ -72,6 +73,7 @@ class QMJpegViewer : public QObject
                 ~QMJpegViewer();
 
 
+        quint32 fps_max_frames;
         Qt::AspectRatioMode aspect_ratio; //for *_qlabel see _refresh_qlabel()
 
 
@@ -81,6 +83,7 @@ class QMJpegViewer : public QObject
         int   send_request(const QByteArray &request);
 
         void  set_qlabel(QLabel *qlabel);
+        float get_fps() { return _fps; }
 
         quint32 set_max_mjpeg_header_size(quint32 size);
         quint32 get_max_mjpeg_header_size() { return _max_mjpeg_header_size; }
@@ -99,7 +102,9 @@ class QMJpegViewer : public QObject
 
         void connected();
         void disconnected();
+        void updated_fps(float fps);
         void error(QMJpegViewer::MJpegViewerError);
+
 
 
     protected slots:
@@ -127,7 +132,12 @@ class QMJpegViewer : public QObject
         QRegExp     _rx_jpeg_len;  //for find Content-Length:
         QRegExp     _rx_rnrn;      //for find \r\n\r\n
 
+        float       _fps;
+        quint32     _fps_num_frames;
+        QTime       _fps_time_start;
 
+
+        void  _calculate_fps();
         void  _refresh_qlabel();
 };
 

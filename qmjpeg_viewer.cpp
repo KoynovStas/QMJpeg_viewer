@@ -42,6 +42,7 @@ QMJpegViewer::QMJpegViewer(QObject *parent) :
     QObject(parent),
 
     //public
+    fps_max_frames(1000),
     aspect_ratio(Qt::KeepAspectRatio),
 
     //private
@@ -50,7 +51,11 @@ QMJpegViewer::QMJpegViewer(QObject *parent) :
     _max_jpeg_size(1024*1024),
 
     _rx_jpeg_len("Content-Length: (\\d+)"),
-    _rx_rnrn("(\\r\\n\\r\\n)")
+    _rx_rnrn("(\\r\\n\\r\\n)"),
+
+    _fps(0),
+    _fps_num_frames(0),
+    _fps_time_start(QTime::currentTime())
 {
     qRegisterMetaType<QMJpegViewer::MJpegViewerError>("QMJpegViewer::MJpegViewerError");
 
@@ -219,6 +224,21 @@ void QMJpegViewer::ReadyRead_state_2()
 
 
 
+void QMJpegViewer::_calculate_fps()
+{
+    if( !fps_max_frames || (_fps_num_frames++ < fps_max_frames) )
+        return;
+
+    _fps = fps_max_frames / (float)_fps_time_start.secsTo(QTime::currentTime());
+
+    _fps_time_start = QTime::currentTime();
+    _fps_num_frames = 0;
+
+    emit updated_fps(_fps);
+}
+
+
+
 void QMJpegViewer::_refresh_qlabel()
 {
     if(!_qlabel)
@@ -233,4 +253,7 @@ void QMJpegViewer::_refresh_qlabel()
     }
 
     _qlabel_mutex.unlock();
+
+
+    _calculate_fps();
 }
