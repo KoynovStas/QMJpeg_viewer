@@ -76,6 +76,9 @@ void QMJpegViewer::connect_to_host(const QString &host_name, quint16 host_port)
                      this, SLOT(proxy_socket_error()));
 
 
+    QObject::connect(&_tcp_socket, SIGNAL(readyRead()), this, SLOT(ReadyRead_state_1()));
+
+
     _tcp_socket.connectToHost(host_name, host_port);
 }
 
@@ -133,4 +136,48 @@ quint32 QMJpegViewer::set_max_jpeg_size(quint32 size)
     _max_jpeg_size = size;
 
     return _max_jpeg_size;
+}
+
+
+
+void QMJpegViewer::ReadyRead_state_1()
+{
+    if( _tcp_socket.bytesAvailable() < _max_mjpeg_header_size)
+        return;
+
+
+    _buf = _tcp_socket.read(_max_mjpeg_header_size);
+
+
+    int pos = _rx_jpeg_len.indexIn(_buf);
+
+    if( pos == -1 ) //broken header
+    {
+        emit error(BrokenHeader);
+        return;
+    }
+
+
+    _jpeg_size = _rx_jpeg_len.cap(1).toInt(0, 10);
+
+    if( _jpeg_size >= (qint32)_max_jpeg_size )
+    {
+        emit error(MaxJpegSize);
+        return;
+    }
+
+
+    //find Binary JPEG offset
+    _jpeg_offset = _rx_rnrn.indexIn(_buf, pos);
+
+    if( _jpeg_offset == -1 ) //broken header
+    {
+        emit error(CantFindJpegOffset);
+        return;
+    }
+
+    _jpeg_offset += _rx_rnrn.matchedLength();
+
+
+    //next state
 }

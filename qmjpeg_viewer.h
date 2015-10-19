@@ -58,6 +58,9 @@ class QMJpegViewer : public QObject
         enum MJpegViewerError
         {
             InnerSocketError,   //for detail see socket_error()
+            BrokenHeader,
+            MaxJpegSize,
+            CantFindJpegOffset,
 
             UnknownError = -1
         };
@@ -97,6 +100,7 @@ class QMJpegViewer : public QObject
     protected slots:
 
         void proxy_socket_error(){ emit error(InnerSocketError); }
+        void ReadyRead_state_1();
 
 
 
@@ -105,9 +109,13 @@ class QMJpegViewer : public QObject
         QMutex      _qlabel_mutex;
         QLabel     *_qlabel;
         QTcpSocket  _tcp_socket;
+        QByteArray  _buf;
 
         quint32     _max_mjpeg_header_size;
         quint32     _max_jpeg_size;
+
+        qint32      _jpeg_size;
+        qint32      _jpeg_offset;
 
         QRegExp     _rx_jpeg_len;  //for find Content-Length:
         QRegExp     _rx_rnrn;      //for find \r\n\r\n
