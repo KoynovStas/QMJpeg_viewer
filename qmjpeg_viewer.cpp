@@ -81,6 +81,17 @@ void QMJpegViewer::disconnect_from_host()
 
 
 
+int QMJpegViewer::send_request(const QByteArray &request)
+{
+    if( request.length() == 0 )
+        return -1;
+
+
+    return _tcp_socket.write((char *)request.constData(), request.length());
+}
+
+
+
 void QMJpegViewer::set_qlabel(QLabel *qlabel)
 {
     _qlabel_mutex.lock();
