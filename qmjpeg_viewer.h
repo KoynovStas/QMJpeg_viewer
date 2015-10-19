@@ -38,6 +38,7 @@
 #include <QObject>
 #include <QMutex>
 #include <QLabel>
+#include <QTcpSocket>
 
 
 
@@ -55,7 +56,17 @@ class QMJpegViewer : public QObject
                 ~QMJpegViewer();
 
 
+        void  connect_to_host(const QString &host_name, quint16 host_port);
+        void  disconnect_from_host();
+
         void  set_qlabel(QLabel *qlabel);
+
+
+
+    signals:
+
+        void connected();
+        void disconnected();
 
 
 
@@ -63,6 +74,7 @@ class QMJpegViewer : public QObject
 
         QMutex      _qlabel_mutex;
         QLabel     *_qlabel;
+        QTcpSocket  _tcp_socket;
 };
 
 

@@ -50,6 +50,33 @@ QMJpegViewer::QMJpegViewer(QObject *parent) :
 
 QMJpegViewer::~QMJpegViewer()
 {
+    disconnect_from_host();
+    set_qlabel(NULL);
+}
+
+
+
+void QMJpegViewer::connect_to_host(const QString &host_name, quint16 host_port)
+{
+    QObject::connect(&_tcp_socket, SIGNAL(connected()), this, SIGNAL(connected()));
+
+
+    QObject::connect(&_tcp_socket, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
+
+
+    _tcp_socket.connectToHost(host_name, host_port);
+}
+
+
+
+void QMJpegViewer::disconnect_from_host()
+{
+    //disconnect all signals and slots for _tcp_socket
+    QObject::disconnect(&_tcp_socket, 0, 0, 0);
+
+    _tcp_socket.close();
+
+    emit disconnected();
 }
 
 
