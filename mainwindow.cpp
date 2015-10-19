@@ -50,6 +50,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    //disconnect all signals and slots for mjpeg
+    QObject::disconnect(&mjpeg, 0, 0, 0);
+
     delete ui;
 }
 
