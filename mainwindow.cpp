@@ -26,6 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
                      this, SLOT(change_status()));
 
 
+    QObject::connect(&mjpeg,  SIGNAL(error(QMJpegViewer::MJpegViewerError)),
+                     this, SLOT(process_error(QMJpegViewer::MJpegViewerError)));
+
+
     QObject::connect(ui->connect_button, SIGNAL(clicked()),
                      this,  SLOT(connect_btn_clicked()));
 
@@ -118,4 +122,19 @@ void MainWindow::change_status()
 
     ui->statusBar->showMessage(QString("Disconnected"));
     ui->connect_button->setText("Connect");
+}
+
+
+
+void MainWindow::process_error(QMJpegViewer::MJpegViewerError error)
+{
+    //show error
+    if( error == QMJpegViewer::InnerSocketError )
+        ui->statusBar->showMessage( QString("Error: %1  socket error: %2").arg(error).arg(mjpeg.socket_error()) );
+    else
+        ui->statusBar->showMessage( QString("Error: %1").arg(error) );
+
+
+    //we do not handle errors simply close
+    mjpeg.disconnect_from_host();
 }

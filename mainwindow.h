@@ -36,6 +36,8 @@ class MainWindow : public QMainWindow
 
         void change_status();
 
+        void process_error(QMJpegViewer::MJpegViewerError error);
+
 
     private:
 
