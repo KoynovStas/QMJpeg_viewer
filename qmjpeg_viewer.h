@@ -84,6 +84,12 @@ class QMJpegViewer : public QObject
 
         void connected();
         void disconnected();
+        void error(QMJpegViewer::MJpegViewerError);
+
+
+    protected slots:
+
+        void proxy_socket_error(){ emit error(InnerSocketError); }
 
 
 

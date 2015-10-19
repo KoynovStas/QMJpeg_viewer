@@ -67,6 +67,10 @@ void QMJpegViewer::connect_to_host(const QString &host_name, quint16 host_port)
     QObject::connect(&_tcp_socket, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
 
 
+    QObject::connect(&_tcp_socket, SIGNAL(error(QAbstractSocket::SocketError)),
+                     this, SLOT(proxy_socket_error()));
+
+
     _tcp_socket.connectToHost(host_name, host_port);
 }
 
