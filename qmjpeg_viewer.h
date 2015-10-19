@@ -36,6 +36,8 @@
 
 
 #include <QObject>
+#include <QMutex>
+#include <QLabel>
 
 
 
@@ -52,6 +54,15 @@ class QMJpegViewer : public QObject
         explicit QMJpegViewer(QObject *parent = 0);
                 ~QMJpegViewer();
 
+
+        void  set_qlabel(QLabel *qlabel);
+
+
+
+    private:
+
+        QMutex      _qlabel_mutex;
+        QLabel     *_qlabel;
 };
 
 

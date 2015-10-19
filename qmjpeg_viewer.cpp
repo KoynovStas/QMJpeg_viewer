@@ -39,7 +39,10 @@
 
 
 QMJpegViewer::QMJpegViewer(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+
+    //private
+    _qlabel(NULL)
 {
 }
 
@@ -47,4 +50,13 @@ QMJpegViewer::QMJpegViewer(QObject *parent) :
 
 QMJpegViewer::~QMJpegViewer()
 {
+}
+
+
+
+void QMJpegViewer::set_qlabel(QLabel *qlabel)
+{
+    _qlabel_mutex.lock();
+    _qlabel = qlabel;
+    _qlabel_mutex.unlock();
 }
