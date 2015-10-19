@@ -38,6 +38,7 @@
 #include <QObject>
 #include <QMutex>
 #include <QLabel>
+#include <QRegExp>
 #include <QTcpSocket>
 #include <QByteArray>
 #include <QMetaType>
@@ -107,6 +108,9 @@ class QMJpegViewer : public QObject
 
         quint32     _max_mjpeg_header_size;
         quint32     _max_jpeg_size;
+
+        QRegExp     _rx_jpeg_len;  //for find Content-Length:
+        QRegExp     _rx_rnrn;      //for find \r\n\r\n
 };
 
 Q_DECLARE_METATYPE(QMJpegViewer::MJpegViewerError)

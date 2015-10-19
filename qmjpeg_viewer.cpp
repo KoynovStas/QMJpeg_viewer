@@ -44,7 +44,10 @@ QMJpegViewer::QMJpegViewer(QObject *parent) :
     //private
     _qlabel(NULL),
     _max_mjpeg_header_size(1024),
-    _max_jpeg_size(1024*1024)
+    _max_jpeg_size(1024*1024),
+
+    _rx_jpeg_len("Content-Length: (\\d+)"),
+    _rx_rnrn("(\\r\\n\\r\\n)")
 {
     qRegisterMetaType<QMJpegViewer::MJpegViewerError>("QMJpegViewer::MJpegViewerError");
 
