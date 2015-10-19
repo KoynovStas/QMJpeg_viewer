@@ -32,6 +32,7 @@ class MainWindow : public QMainWindow
         void disconnect_from_dev();
 
         void send_request();
+        void set_ratio();
 
         void change_status();
 

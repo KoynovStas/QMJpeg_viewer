@@ -28,6 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->connect_button, SIGNAL(clicked()),
                      this,  SLOT(connect_btn_clicked()));
+
+
+    QObject::connect(ui->ratio_combo_box, SIGNAL(currentIndexChanged(int)),
+                     this,  SLOT(set_ratio()));
 }
 
 
@@ -70,6 +74,30 @@ void MainWindow::disconnect_from_dev()
 void MainWindow::send_request()
 {
     mjpeg.send_request(ui->request_edit->text().toLatin1());
+}
+
+
+
+void MainWindow::set_ratio()
+{
+    switch(ui->ratio_combo_box->currentIndex())
+    {
+        case Qt::IgnoreAspectRatio:
+            mjpeg.aspect_ratio = Qt::IgnoreAspectRatio;
+            break;
+
+        case Qt::KeepAspectRatio:
+            mjpeg.aspect_ratio = Qt::KeepAspectRatio;
+            break;
+
+        case Qt::KeepAspectRatioByExpanding:
+            mjpeg.aspect_ratio = Qt::KeepAspectRatioByExpanding;
+            break;
+
+        default:
+            mjpeg.aspect_ratio = Qt::KeepAspectRatio;
+            break;
+    }
 }
 
 
