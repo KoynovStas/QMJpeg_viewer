@@ -18,6 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
                      this, SLOT(change_status()));
 
 
+    QObject::connect(&mjpeg,  SIGNAL(connected()),
+                     this, SLOT(send_request()));
+
+
     QObject::connect(&mjpeg,  SIGNAL(disconnected()),
                      this, SLOT(change_status()));
 
@@ -59,6 +63,13 @@ void MainWindow::disconnect_from_dev()
     ui->connect_button->setEnabled(false);
 
     mjpeg.disconnect_from_host();
+}
+
+
+
+void MainWindow::send_request()
+{
+    mjpeg.send_request(ui->request_edit->text().toLatin1());
 }
 
 
