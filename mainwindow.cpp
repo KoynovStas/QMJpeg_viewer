@@ -26,6 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
                      this, SLOT(change_status()));
 
 
+    QObject::connect(&mjpeg,  SIGNAL(updated_fps(float)),
+                     this, SLOT(updated_fps(float)));
+
+
     QObject::connect(&mjpeg,  SIGNAL(error(QMJpegViewer::MJpegViewerError)),
                      this, SLOT(process_error(QMJpegViewer::MJpegViewerError)));
 
@@ -36,6 +40,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->ratio_combo_box, SIGNAL(currentIndexChanged(int)),
                      this,  SLOT(set_ratio()));
+
+
+    QObject::connect(ui->fps_frames_spin_box, SIGNAL(valueChanged(int)),
+                     this,  SLOT(set_fps_frames()));
 }
 
 
@@ -122,6 +130,20 @@ void MainWindow::change_status()
 
     ui->statusBar->showMessage(QString("Disconnected"));
     ui->connect_button->setText("Connect");
+}
+
+
+
+void MainWindow::set_fps_frames()
+{
+    mjpeg.fps_max_frames = ui->fps_frames_spin_box->value();
+}
+
+
+
+void MainWindow::updated_fps(float new_fps)
+{
+    ui->statusBar->showMessage(QString("Connected   FPS: %1").arg(new_fps));
 }
 
 

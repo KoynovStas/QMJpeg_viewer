@@ -33,7 +33,9 @@ class MainWindow : public QMainWindow
 
         void send_request();
         void set_ratio();
+        void set_fps_frames();
 
+        void updated_fps(float new_fps);
         void change_status();
 
         void process_error(QMJpegViewer::MJpegViewerError error);
