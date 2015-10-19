@@ -180,4 +180,36 @@ void QMJpegViewer::ReadyRead_state_1()
 
 
     //next state
+    QObject::disconnect(&_tcp_socket, SIGNAL(readyRead()), 0, 0);
+    QObject::connect(&_tcp_socket, SIGNAL(readyRead()), this, SLOT(ReadyRead_state_2()));
+}
+
+
+
+void QMJpegViewer::ReadyRead_state_2()
+{
+    if( _tcp_socket.bytesAvailable() < _jpeg_size)
+        return;
+
+
+    _buf = _buf.mid(_jpeg_offset);
+
+
+    //(_max_jpeg_header_size - _jpeg_offset) - the size of which is already reading
+    _buf += _tcp_socket.read(_jpeg_size - (_max_mjpeg_header_size - _jpeg_offset));
+
+
+    if(_pixmap.loadFromData((const uchar *)_buf.constData(), _jpeg_size, "JPEG"))
+    {
+//        _refresh_qlabel();
+    }
+    else
+    {
+        emit error(CantLoadJpeg);
+    }
+
+
+    //next state
+    QObject::disconnect(&_tcp_socket, SIGNAL(readyRead()), 0, 0);
+    QObject::connect(&_tcp_socket, SIGNAL(readyRead()), this, SLOT(ReadyRead_state_1()));
 }

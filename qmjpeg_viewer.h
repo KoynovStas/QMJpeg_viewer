@@ -39,6 +39,7 @@
 #include <QMutex>
 #include <QLabel>
 #include <QRegExp>
+#include <QPixmap>
 #include <QTcpSocket>
 #include <QByteArray>
 #include <QMetaType>
@@ -61,6 +62,7 @@ class QMJpegViewer : public QObject
             BrokenHeader,
             MaxJpegSize,
             CantFindJpegOffset,
+            CantLoadJpeg,
 
             UnknownError = -1
         };
@@ -101,6 +103,7 @@ class QMJpegViewer : public QObject
 
         void proxy_socket_error(){ emit error(InnerSocketError); }
         void ReadyRead_state_1();
+        void ReadyRead_state_2();
 
 
 
@@ -108,6 +111,7 @@ class QMJpegViewer : public QObject
 
         QMutex      _qlabel_mutex;
         QLabel     *_qlabel;
+        QPixmap     _pixmap;
         QTcpSocket  _tcp_socket;
         QByteArray  _buf;
 
