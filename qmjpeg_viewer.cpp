@@ -44,6 +44,7 @@ QMJpegViewer::QMJpegViewer(QObject *parent) :
     //private
     _qlabel(NULL)
 {
+    qRegisterMetaType<QMJpegViewer::MJpegViewerError>("QMJpegViewer::MJpegViewerError");
 
     set_socket_size(4*1024*1024);
 }

@@ -40,6 +40,7 @@
 #include <QLabel>
 #include <QTcpSocket>
 #include <QByteArray>
+#include <QMetaType>
 
 
 
@@ -48,9 +49,17 @@
 class QMJpegViewer : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(MJpegViewerError)
 
 
     public:
+
+        enum MJpegViewerError
+        {
+            InnerSocketError,   //for detail see socket_error()
+
+            UnknownError = -1
+        };
 
 
         explicit QMJpegViewer(QObject *parent = 0);
@@ -84,6 +93,8 @@ class QMJpegViewer : public QObject
         QLabel     *_qlabel;
         QTcpSocket  _tcp_socket;
 };
+
+Q_DECLARE_METATYPE(QMJpegViewer::MJpegViewerError)
 
 
 
