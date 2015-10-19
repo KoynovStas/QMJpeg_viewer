@@ -72,6 +72,9 @@ class QMJpegViewer : public QObject
                 ~QMJpegViewer();
 
 
+        Qt::AspectRatioMode aspect_ratio; //for *_qlabel see _refresh_qlabel()
+
+
         void  connect_to_host(const QString &host_name, quint16 host_port);
         void  disconnect_from_host();
 
@@ -123,6 +126,9 @@ class QMJpegViewer : public QObject
 
         QRegExp     _rx_jpeg_len;  //for find Content-Length:
         QRegExp     _rx_rnrn;      //for find \r\n\r\n
+
+
+        void  _refresh_qlabel();
 };
 
 Q_DECLARE_METATYPE(QMJpegViewer::MJpegViewerError)

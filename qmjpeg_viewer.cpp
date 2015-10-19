@@ -41,6 +41,9 @@
 QMJpegViewer::QMJpegViewer(QObject *parent) :
     QObject(parent),
 
+    //public
+    aspect_ratio(Qt::KeepAspectRatio),
+
     //private
     _qlabel(NULL),
     _max_mjpeg_header_size(1024),
@@ -201,7 +204,7 @@ void QMJpegViewer::ReadyRead_state_2()
 
     if(_pixmap.loadFromData((const uchar *)_buf.constData(), _jpeg_size, "JPEG"))
     {
-//        _refresh_qlabel();
+        _refresh_qlabel();
     }
     else
     {
@@ -212,4 +215,22 @@ void QMJpegViewer::ReadyRead_state_2()
     //next state
     QObject::disconnect(&_tcp_socket, SIGNAL(readyRead()), 0, 0);
     QObject::connect(&_tcp_socket, SIGNAL(readyRead()), this, SLOT(ReadyRead_state_1()));
+}
+
+
+
+void QMJpegViewer::_refresh_qlabel()
+{
+    if(!_qlabel)
+        return;
+
+
+    _qlabel_mutex.lock();
+
+    if( _qlabel )
+    {
+        _qlabel->setPixmap(_pixmap.scaled(_qlabel->size(), aspect_ratio));
+    }
+
+    _qlabel_mutex.unlock();
 }
