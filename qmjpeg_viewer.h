@@ -73,6 +73,9 @@ class QMJpegViewer : public QObject
 
         void  set_qlabel(QLabel *qlabel);
 
+        quint32 set_max_mjpeg_header_size(quint32 size);
+        quint32 get_max_mjpeg_header_size() { return _max_mjpeg_header_size; }
+
         quint32 set_max_jpeg_size(quint32 size);
         quint32 get_max_jpeg_size() { return _max_jpeg_size; }
 
@@ -102,6 +105,7 @@ class QMJpegViewer : public QObject
         QLabel     *_qlabel;
         QTcpSocket  _tcp_socket;
 
+        quint32     _max_mjpeg_header_size;
         quint32     _max_jpeg_size;
 };
 

@@ -43,6 +43,7 @@ QMJpegViewer::QMJpegViewer(QObject *parent) :
 
     //private
     _qlabel(NULL),
+    _max_mjpeg_header_size(1024),
     _max_jpeg_size(1024*1024)
 {
     qRegisterMetaType<QMJpegViewer::MJpegViewerError>("QMJpegViewer::MJpegViewerError");
@@ -105,6 +106,18 @@ void QMJpegViewer::set_qlabel(QLabel *qlabel)
     _qlabel_mutex.lock();
     _qlabel = qlabel;
     _qlabel_mutex.unlock();
+}
+
+
+
+quint32 QMJpegViewer::set_max_mjpeg_header_size(quint32 size)
+{
+    if( size < 1024 )
+        size = 1024;
+
+    _max_mjpeg_header_size = size;
+
+    return _max_mjpeg_header_size;
 }
 
 
