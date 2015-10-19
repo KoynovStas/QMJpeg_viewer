@@ -31,6 +31,8 @@ class MainWindow : public QMainWindow
         void connect_to_dev();
         void disconnect_from_dev();
 
+        void change_status();
+
 
     private:
 

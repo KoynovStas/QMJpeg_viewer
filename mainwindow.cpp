@@ -14,6 +14,14 @@ MainWindow::MainWindow(QWidget *parent) :
     mjpeg.set_qlabel(ui->mjpeg_label);
 
 
+    QObject::connect(&mjpeg,  SIGNAL(connected()),
+                     this, SLOT(change_status()));
+
+
+    QObject::connect(&mjpeg,  SIGNAL(disconnected()),
+                     this, SLOT(change_status()));
+
+
     QObject::connect(ui->connect_button, SIGNAL(clicked()),
                      this,  SLOT(connect_btn_clicked()));
 }
@@ -51,4 +59,24 @@ void MainWindow::disconnect_from_dev()
     ui->connect_button->setEnabled(false);
 
     mjpeg.disconnect_from_host();
+}
+
+
+
+void MainWindow::change_status()
+{
+
+    ui->connect_button->setEnabled(true);
+
+
+    if( mjpeg.state() == QAbstractSocket::ConnectedState )
+    {
+        ui->statusBar->showMessage(QString("Connected"));
+        ui->connect_button->setText("Disconnect");
+        return;
+    }
+
+
+    ui->statusBar->showMessage(QString("Disconnected"));
+    ui->connect_button->setText("Connect");
 }
