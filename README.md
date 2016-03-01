@@ -2,7 +2,11 @@
 
 
 ## Description
-QMJpeg_Viewer is an application that demonstrates how work Qt class QMJpegViewer
+QMJpeg_Viewer is an application that demonstrates how work Qt class **[QMJpegViewer](./qmjpeg_viewer.h)**
+
+
+![QMJpeg_viewer_001](./screenshots/QMJpeg_viewer_001.png)
+
 
 
 **The class has the following public methods:**
@@ -56,8 +60,21 @@ enum MJpegViewerError
 More details see: **[qmjpeg_viewer.h](./qmjpeg_viewer.h)**
 
 
-***
+
+## Build
+
+```console
+qmake
+make
+```
+
+
 <br/>
 ## License
 
 [BSD](./LICENSE).
+
+
+
+## Copyright
+Copyright (C) 2016 Koynov Stas - skojnov@yandex.ru
