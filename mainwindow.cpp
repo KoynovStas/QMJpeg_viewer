@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 
@@ -88,7 +88,11 @@ void MainWindow::disconnect_from_dev()
 
 void MainWindow::send_request()
 {
-    mjpeg.send_request(ui->request_edit->text().toLatin1());
+    QByteArray request(ui->request_edit->text().toLatin1());
+
+    request.push_back("\r\n\0"); //need for some servers
+
+    mjpeg.send_request(request);
 }
 
 
